@@ -32,6 +32,8 @@ public class Bot {
 					if (!author.isBot() && command[0].toString().equals(System.getenv("prefix"))) {
 						if (command.length < 2)
 							defaultWrongCommandMessage(message);
+						else if (System.getenv("maintenance").equals("enabled"))
+							maintenanceModeMessage(message);
 						else {
 							if (command[1].toString().equals("help"))
 								help.displayHelp(message);
@@ -55,6 +57,14 @@ public class Bot {
 		message.getChannel().subscribe(channel -> {
 			channel.createMessage("I am sorry, but I could not understand what you wanted me to do. Please run `"
 					+ System.getenv("prefix") + " help` to see a list of all valid commands.").subscribe();
+		});
+	}
+
+	public static void maintenanceModeMessage(Message message) {
+		message.getChannel().subscribe(channel -> {
+			channel.createMessage(
+					"I am so sorry to disappoint you, but I am currently undergoing maintenance. Please re-try after sometime. You can visit https://remind.aniruddha.net/status to know more.")
+					.subscribe();
 		});
 	}
 }
